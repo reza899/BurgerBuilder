@@ -4,15 +4,24 @@ import classes from "./BuildControls.module.css";
 
 const BuildControls = (props) => {
   const controls = [
+    { label: "Salad", type: "salad" },
+    { label: "Cheese", type: "cheese" },
     { label: "Meat", type: "meat" },
     { label: "Bacon", type: "bacon" },
-    { label: "Cheese", type: "cheese" },
-    { label: "Salad", type: "salad" },
   ];
   return (
     <div className={classes.BuildControls}>
+      <h3>Total Price: {props.totalPrice.toFixed(2)}</h3>
       {controls.map((e) => {
-        return <BuildControl label={e.label} key={e.type} />;
+        return (
+          <BuildControl
+            label={e.label}
+            key={e.type}
+            added={() => props.added(e.type)}
+            removed={() => props.removed(e.type)}
+            disabled={props.disabled[e.type]}
+          />
+        );
       })}
     </div>
   );
