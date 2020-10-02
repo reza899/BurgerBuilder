@@ -61,7 +61,9 @@ class BurgerBuilder extends Component {
   purchaseHandle = () => {
     this.setState({ purchasing: true });
   };
-
+  backdropClickHandler = () => {
+    this.setState({ purchasing: !this.state.purchasing });
+  };
   render() {
     const disabledInfo = { ...this.state.ingredients };
     for (let key in disabledInfo) {
@@ -69,7 +71,10 @@ class BurgerBuilder extends Component {
     }
     return (
       <>
-        <Modal show={this.state.purchasing}>
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.backdropClickHandler}
+        >
           <OrderSummary
             totalPrice={this.state.totalPrice}
             ingredients={this.state.ingredients}
