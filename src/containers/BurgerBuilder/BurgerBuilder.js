@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Burger from "../../components/Layout/Burger/Burger";
-import BurgerControls from "../../components/Layout/Burger/BuildControls/BuildControls";
-import Modal from "../../components/Layout/UI/Modal/Modal";
-import OrderSummary from "../../components/Layout/Burger/OrderSummary/OrderSummary";
+import Burger from "../../components/Burger/Burger";
+import BurgerControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICE = {
   meat: 2,
