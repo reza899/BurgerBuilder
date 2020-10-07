@@ -30,7 +30,6 @@ const BuildControls = (props) => {
       >
         ORDER NOW
       </button>
-      ;
     </div>
   );
 };
