@@ -5,16 +5,21 @@ const withErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {
     constructor(props) {
       super(props);
-      axios.interceptors.request.use((req) => {
+      this.reqInterceptros = axios.interceptors.request.use((req) => {
         this.setState({ error: null });
         return req;
       });
-      axios.interceptors.response.use(
+      this.resInterceptros = axios.interceptors.response.use(
         (res) => res,
         (err) => {
           this.setState({ error: err });
         }
       );
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptros);
+      axios.interceptors.response.eject(this.resInterceptros);
     }
 
     state = {
