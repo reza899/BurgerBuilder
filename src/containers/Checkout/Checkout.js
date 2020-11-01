@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
+// import { Redirect } from "react-router-dom";
 
 class Checkout extends Component {
   state = {
@@ -10,10 +11,22 @@ class Checkout extends Component {
       bacon: 1,
     },
   };
+
+  checkoutContinued = () => {
+    this.props.history.replace("/checkout/contact-data");
+  };
+  checkoutCanelled = () => {
+    //this.props.history.push("/");
+    this.props.history.goBack();
+  };
   render() {
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary
+          ingredients={this.state.ingredients}
+          checkoutCanelled={this.checkoutCanelled}
+          checkoutContinued={this.checkoutContinued}
+        />
       </div>
     );
   }
