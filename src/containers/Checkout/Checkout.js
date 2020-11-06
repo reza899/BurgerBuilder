@@ -5,12 +5,36 @@ import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSumm
 class Checkout extends Component {
   state = {
     ingredients: {
-      salad: 1,
       meat: 1,
-      cheese: 1,
       bacon: 1,
+      salad: 1,
+      cheese: 1,
     },
+    isAct: false,
   };
+  componentDidMount() {
+    const query = new URLSearchParams(this.props.location.search);
+    const ingredients = {};
+    for (const param of query.entries()) {
+      ingredients[param[0]] = +param[1];
+    }
+    this.setState({ ingredients });
+  }
+  // componentDidMount() {
+  //   console.log(this.props);
+  //   const {result:{salad,meat,cheese}} = QueryString.parse(this.props.location.search);
+
+  //   this.setState({
+  //     ingredients: result,
+  //   });
+  //   this.setState({ isAct: true });
+  //   console.log(
+  //     this.state.ingredients,
+  //     this.state.isAct,
+  //     ingr,
+  //     QueryString.parse(this.props.location.search)
+  //   );
+  // }
 
   checkoutContinued = () => {
     this.props.history.replace("/checkout/contact-data");
