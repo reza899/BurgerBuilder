@@ -16,6 +16,10 @@ export default class ContactData extends Component {
           placeholder: "Your Name",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       email: {
         elementType: "input",
@@ -24,6 +28,10 @@ export default class ContactData extends Component {
           placeholder: "Your E-Mail",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       street: {
         elementType: "input",
@@ -32,6 +40,10 @@ export default class ContactData extends Component {
           placeholder: "Your Address",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       postalCode: {
         elementType: "input",
@@ -40,6 +52,10 @@ export default class ContactData extends Component {
           placeholder: "Your ZIP Code",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -49,7 +65,7 @@ export default class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" },
           ],
         },
-        value: "",
+        value: "cheapest",
       },
     },
     loading: false,
@@ -59,9 +75,14 @@ export default class ContactData extends Component {
     event.preventDefault();
     console.log(this.props.ingredients);
     this.setState({ loading: true });
+    const formData = {};
+    for (const key in this.state.orderForm) {
+      formData[key] = this.state.orderForm[key].value;
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
+      customer: formData,
     };
     axios
       .post("/order.json", order)
@@ -73,6 +94,16 @@ export default class ContactData extends Component {
         this.setState({ loading: false });
       });
   };
+
+  inputChangeHandler = (event, el) => {
+    const orderfrm = { ...this.state.orderForm };
+    const orderfrmElement = { ...orderfrm[el] };
+
+    orderfrmElement.value = event.target.value;
+    orderfrm[el] = orderfrmElement;
+
+    this.setState({ orderForm: orderfrm });
+  };
   render() {
     const formElementArray = [];
     for (const key in this.state.orderForm) {
@@ -83,19 +114,18 @@ export default class ContactData extends Component {
     }
 
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementArray.map((el) => (
           <Input
             key={el.id}
             elementType={el.config.elementType}
             elementConfig={el.config.elementConfig}
             value={el.value}
+            changed={(event) => this.inputChangeHandler(event, el.id)}
           />
         ))}
 
-        <Button btnType="Success" clicked={this.orderHandler}>
-          ORDER
-        </Button>
+        <Button btnType="Success">ORDER</Button>
       </form>
     );
     if (this.state.loading) {
