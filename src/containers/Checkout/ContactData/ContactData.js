@@ -71,9 +71,11 @@ export default class ContactData extends Component {
           ],
         },
         value: "",
+        valid: true,
       },
     },
     loading: false,
+    formIsValid: false,
   };
 
   orderHandler = (event) => {
@@ -128,7 +130,12 @@ export default class ContactData extends Component {
     console.log(orderfrmElement);
     orderfrm[el] = orderfrmElement;
 
-    this.setState({ orderForm: orderfrm });
+    let frmIsValid = true;
+    for (const key in orderfrm) {
+      frmIsValid = orderfrm[key].valid && frmIsValid;
+    }
+    console.log(frmIsValid);
+    this.setState({ orderForm: orderfrm, formIsValid: frmIsValid });
   };
   render() {
     const formElementArray = [];
@@ -154,7 +161,9 @@ export default class ContactData extends Component {
           />
         ))}
 
-        <Button btnType="Success">ORDER</Button>
+        <Button btnType="Success" disabled={!this.state.formIsValid}>
+          ORDER
+        </Button>
       </form>
     );
     if (this.state.loading) {
