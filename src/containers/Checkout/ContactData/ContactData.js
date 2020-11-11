@@ -20,6 +20,7 @@ export default class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -32,6 +33,7 @@ export default class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -44,6 +46,7 @@ export default class ContactData extends Component {
           required: true,
         },
         valid: false,
+        touched: false,
       },
       postalCode: {
         elementType: "input",
@@ -54,8 +57,10 @@ export default class ContactData extends Component {
         value: "",
         validation: {
           required: true,
+          minLength: 5,
         },
         valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -65,7 +70,7 @@ export default class ContactData extends Component {
             { value: "cheapest", displayValue: "Cheapest" },
           ],
         },
-        value: "cheapest",
+        value: "",
       },
     },
     loading: false,
@@ -82,7 +87,7 @@ export default class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: formData,
+      formData: formData,
     };
     axios
       .post("/order.json", order)
@@ -94,12 +99,33 @@ export default class ContactData extends Component {
         this.setState({ loading: false });
       });
   };
+  checkValidity(value, rules) {
+    let isValid = true;
+    if (rules) {
+      if (rules.required) {
+        isValid = value.trim() !== "" && isValid;
+      }
+      if (rules.minLength) {
+        isValid = value.length >= rules.minLength && isValid;
+      }
+    }
+    return isValid;
+  }
 
   inputChangeHandler = (event, el) => {
     const orderfrm = { ...this.state.orderForm };
     const orderfrmElement = { ...orderfrm[el] };
 
     orderfrmElement.value = event.target.value;
+    if (orderfrmElement.value) {
+      orderfrmElement.touched = true;
+    }
+    orderfrmElement.valid = this.checkValidity(
+      orderfrmElement.value,
+      orderfrmElement.validation
+    );
+
+    console.log(orderfrmElement);
     orderfrm[el] = orderfrmElement;
 
     this.setState({ orderForm: orderfrm });
@@ -121,7 +147,10 @@ export default class ContactData extends Component {
             elementType={el.config.elementType}
             elementConfig={el.config.elementConfig}
             value={el.value}
+            souldValidation={el.config.validation}
+            touched={el.config.touched}
             changed={(event) => this.inputChangeHandler(event, el.id)}
+            invalid={!el.config.valid}
           />
         ))}
 
