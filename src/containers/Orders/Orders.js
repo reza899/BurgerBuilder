@@ -10,12 +10,12 @@ class Orders extends Component {
   };
   componentDidMount() {
     axios
-      .get("/order.json")
+      .get("/order")
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.results);
         let ods = [];
-        for (const key in res.data) {
-          ods.push({ ...res.data[key], id: key });
+        for (const key in res.data.results) {
+          ods.push({ ...res.data.results[key], id: key });
         }
         this.setState({ orders: ods, loading: false });
       })

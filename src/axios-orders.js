@@ -1,7 +1,15 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: "https://react-my-burger-de9e4.firebaseio.com/",
+const httpService = axios.create({
+  baseURL: "https://parseapi.back4app.com/classes/",
 });
 
-export default instance;
+httpService.interceptors.request.use((config) => {
+  config.headers["X-Parse-REST-API-Key"] =
+    "vtbjW8adVv4QLsVFydONmMMsacgzTlwR7MLQU3gd";
+  config.headers["X-Parse-Application-Id"] =
+    "pMInKdMCLTYbUaJHC5QA87P8BcSfRkOlLOJs7tzw";
+  return config;
+}, undefined);
+
+export default httpService;

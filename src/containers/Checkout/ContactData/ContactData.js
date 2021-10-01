@@ -92,7 +92,7 @@ export default class ContactData extends Component {
       formData: formData,
     };
     axios
-      .post("/order.json", order)
+      .post("/order", order)
       .then((res) => {
         this.setState({ loading: false });
         this.props.history.push("/");
